@@ -8,7 +8,7 @@ import "./ownable.sol";
 contract EzbergFundingFirstRound is ERC20Capped, Ownable {
 
     uint256 private initialSupply = 1075000000000000000000000;
-    uint256 private multiplyer = 4;
+    uint256 private multiplyer = 200;
 
     constructor () public ERC20('EzbergEP', 'EZBi') ERC20Capped(initialSupply) {
     }
