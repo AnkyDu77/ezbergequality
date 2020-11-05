@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title> {{ title }} - EZBERG EQUALITY</title>
+  </head>
+  <body>
+    <h1>It is v.{{ version.version }} of Ezberg Equality Traders API</h1>
+    <p>
+      Hi there! This is a REST API for traders. Here you can register yourself as a trader, create your strategy, place/cancel your orders and get info about them.<br>
+      Notice, <b>all parameters are required</b> to be filled in.<br><br>
+      <b>WARNING</b>: This API is just a prototipe! Application is still in development mode! <b>STABILITY NOT GUARANTEED!!!</b> Use it at your own risk!<br>
+      WARNING: Format "number.decimals" is required everywhere "float" pointer is set. Example: "10000.00", not "10000"
+    </p>
+
+          <p>
+          <br>FUNCTIONS LIST:<br>
+          <br>1. Trader's Registration: '/traderRegistration/'
+          <br> Parameters:
+          <br>- cryptowallet (str);
+          <br>- username (str)
+          <br>
+          <br>Request format:
+          <br>/traderRegistration/cryptowallet=[yourCryptoAddress]&username=[yourUsername]<br><br>
+
+          <br>2. Strategy Registration: '/strategyRegistration/'
+          <br> Parameters:
+          <br>- cryptowallet (str);
+          <br>- algorithm openness - open or close - (str);
+          <br>- strategy's max capital capacity - small (<= $100'000), medium (<= $1'000'000), big (<= $100'000'000), infinite (<= 1'000'000'000) - (str);
+          <br>- leverage (int);
+          <br>- strategy name
+          <br>
+          <br>Request format:
+          <br>/strategyRegistration/cryptowallet=[yourCryptoAddress]&algoOpenness=[yourAlgoOpenness]&capitalCapacity=[yourCapitalCapacity]&leverage=[yourLeverage]&strategyName=[yourStrategyName]<br><br>
+
+          <br>3. Place Order: '/placeOrder/'
+          <br>Parameters:
+          <br>- cryptowallet (str);
+          <br>- strategyID (str);
+          <br>- symbol (str);
+          <br>- direction (str);
+          <br>- order type - have to be "LIMIT" for now - (str);
+          <br>- price (float);
+          <br>- volume (float);
+          <br>- time in force - have to be "GTC" for now (str).
+          <br>
+          <br>Request format:
+          <br>'/placeOrder/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]&symbol=[symbol]&direction=[yourOrdersDirection]&orderType=[yourOrderType]&price=[yourOrdersPrice]&volume=[yourOrdersVolume]&timeInForce=[yourOrdersTimeInForce]'<br><br>
+
+          <br>4. Get All Open Orders: '/openOrders/'
+          <br>Parameters:
+          <br>- cryptowallet (str);
+          <br>- strategyID (str);
+          <br>
+          <br>Request format:
+          <br>/openOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
+
+          <br>5. Get All Orders: '/getOrders/'
+          <br>Parameters:
+          <br>- cryptowallet (str);
+          <br>- strategyID (str);
+          <br>
+          <br>Request format:
+          <br>/getOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
+
+          <br>6. Cancel particular order: /cancelParticularOrder/
+          <br>Parameters:
+          <br>- cryptowallet (str);
+          <br>- strategyID (str);
+          <br>- orderID (str);
+          <br>
+          <br>Request format:
+          <br>/cancelParticularOrder/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]&orderID=[yourOrderID]<br><br>
+
+          <br>7. Cancel All Orders: '/cancelOpenOrders/'
+          <br>Parameters:
+          <br>- cryptowallet (str);
+          <br>- strategyID (str);
+          <br>
+          <br>Request format:
+          <br>/getOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
+
+          </p>
+
+          <p>
+          <br>==== LINKS ====<br>
+          <a href="https://github.com/AnkyDu77">GitHub</a>
+          </p>
+  </body>
+</html>
