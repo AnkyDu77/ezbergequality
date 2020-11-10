@@ -29,7 +29,8 @@ def writeStrategyIndex(salt, hashKey, traderID):
     strategyIndex_ds.to_sql('strategies_i_ds', con=engine, if_exists='append', index=False)
 
     sqlConnection = engine.connect()
-    selectStrategyIndex = 'SELECT "rowid" FROM strategies_i_ds WHERE timestamp = '+str(strategyIndexDict['timestamp'])
+    # selectStrategyIndex = 'SELECT \"rowid\" FROM \"strategies_i_ds\" WHERE \"timestamp\" = '+str(strategyIndexDict['timestamp'])
+    selectStrategyIndex = 'SELECT row_number() over() FROM \"strategies_i_ds\" WHERE \"timestamp\" = '+str(strategyIndexDict['timestamp'])
     strategyIndex = sqlConnection.execute(selectStrategyIndex).fetchall()
     sqlConnection.close()
 

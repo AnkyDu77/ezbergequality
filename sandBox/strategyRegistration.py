@@ -17,7 +17,7 @@ def strategyRegistration(cryptoAddress, algoOpenness, capitalCapacity, leverage,
     engine = create_engine(db_uri, echo=False)
 
     # Check if we have the trader in our DB
-    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE cryptoAddress = "'+str(cryptoAddress)+'"', con = engine)
+    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE \"cryptoAddress\" = \''+str(cryptoAddress)+'\'', con = engine)
 
     if len(trader_ds) == 0:
         return 'Sorry, there is no such cryptowallet address. Please, registrate it first by using traderRegistration() func.'
@@ -60,7 +60,7 @@ def strategyRegistration(cryptoAddress, algoOpenness, capitalCapacity, leverage,
         # Check table existence
         if 'strategies' in engine.table_names():
 
-            strategy_ds = pd.read_sql_query('SELECT * FROM strategies WHERE ush = "'+str(uniquenessStrategyHash)+'"', con = engine)
+            strategy_ds = pd.read_sql_query('SELECT * FROM strategies WHERE \"ush\" = \''+str(uniquenessStrategyHash)+'\'', con = engine)
 
             if len(strategy_ds) > 0:
                 message = 'We got to warn you. Somebody has registrated pretty similar strategy already. Thus if your strategy will get the similar performance it will not participate in a rancking process.'
