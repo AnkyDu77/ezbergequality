@@ -16,7 +16,7 @@ def cancelOrder(cryptoAddress, strategyID, orderID):
     # Get traderID
     db_uri = Config().SQLALCHEMY_DATABASE_URI
     engine = create_engine(db_uri, echo=False)
-    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE cryptoAddress="'+str(cryptoAddress)+'"', con=engine)
+    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE \"cryptoAddress\"=\''+str(cryptoAddress)+'\'', con=engine)
 
     if len(trader_ds) == 1:
         traderID = trader_ds['traderID'][0]
@@ -28,11 +28,11 @@ def cancelOrder(cryptoAddress, strategyID, orderID):
             # Find target orders
             sqlConnection = engine.connect()
             # Check if target order is open
-            findOpenOrder = 'SELECT * FROM orders WHERE orderID = "'+str(orderID)+'" AND status="OPEN"'
+            findOpenOrder = 'SELECT * FROM orders WHERE \"orderID\" = \''+str(orderID)+'\' AND status=\'OPEN\''
             order = sqlConnection.execute(findOpenOrder).fetchall()
             if len(order)==1:
                 # Cancel target order
-                cancelOrder = 'UPDATE orders SET status="CANCELED" WHERE orderID = "'+str(orderID)+'" AND status="OPEN"'
+                cancelOrder = 'UPDATE orders SET status=\'CANCELED\' WHERE \"orderID\" = \''+str(orderID)+'\' AND status=\'OPEN\''
                 sqlConnection.execute(cancelOrder)
                 sqlConnection.close()
 

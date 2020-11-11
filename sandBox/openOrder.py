@@ -20,7 +20,7 @@ def openOrder(cryptoAddress, strategyID, symbol, direction, orderType, price, vo
     db_uri = Config().SQLALCHEMY_DATABASE_URI
     engine = create_engine(db_uri, echo=False)
 
-    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE cryptoAddress="'+str(cryptoAddress)+'"', con=engine)
+    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE \"cryptoAddress\"= \''+str(cryptoAddress)+'\'', con=engine)
 
     if len(trader_ds) == 1:
         traderID = trader_ds['traderID'][0]
@@ -31,9 +31,9 @@ def openOrder(cryptoAddress, strategyID, symbol, direction, orderType, price, vo
         if strategyIndex != None:
 
             # Check if the margin level do not exceed account balance
-            strategy_ds = pd.read_sql_query('SELECT * FROM strategies WHERE strategyID='+str(strategyIndex)+'', con=engine)
-            account_ds = pd.read_sql_query('SELECT * FROM accounts WHERE strategyID='+str(strategyIndex)+' ORDER BY timestamp DESC LIMIT 1', con=engine)
-            positions_ds = pd.read_sql_query('SELECT * FROM positions WHERE strategyID='+str(strategyIndex)+' ORDER BY timestamp DESC LIMIT 1', con=engine)
+            strategy_ds = pd.read_sql_query('SELECT * FROM strategies WHERE \"strategyID\"=\''+str(strategyIndex)+'\'', con=engine)
+            account_ds = pd.read_sql_query('SELECT * FROM accounts WHERE \"strategyID\"=\''+str(strategyIndex)+'\' ORDER BY timestamp DESC LIMIT 1', con=engine)
+            positions_ds = pd.read_sql_query('SELECT * FROM positions WHERE \"strategyID\"=\''+str(strategyIndex)+'\' ORDER BY timestamp DESC LIMIT 1', con=engine)
 
             requiredMargin = (price*volume)/strategy_ds['leverage'][0]
 

@@ -31,8 +31,8 @@ def strategyRegistration(cryptoAddress, algoOpenness, capitalCapacity, leverage,
 
         # Define convretion dictionaries
         ALGO_OPENNESS_CONVERT = {
-            'open': True,
-            'close': False
+            'open': 1,
+            'close': 0
         }
 
         CAPITAL_CAPACITY_CONVERT = {

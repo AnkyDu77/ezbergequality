@@ -17,7 +17,7 @@ def getAllOrders(cryptoAddress, strategyID):
     # Get traderID
     db_uri = Config().SQLALCHEMY_DATABASE_URI
     engine = create_engine(db_uri, echo=False)
-    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE cryptoAddress="'+str(cryptoAddress)+'"', con=engine)
+    trader_ds = pd.read_sql_query('SELECT * FROM traders WHERE \"cryptoAddress\"=\''+str(cryptoAddress)+'\'', con=engine)
 
     if len(trader_ds) == 1:
         traderID = trader_ds['traderID'][0]
