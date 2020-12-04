@@ -21,7 +21,11 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
     address private daiAddress = 0xaD6D458402F60fD3Bd25163575031ACDce07538D; // ROPSTEN TESTNET
 
     uint256 private fairPrice;
-    uint256 private shareDivider = 10; // Defines how much DAI is in 1 EZB
+    // uint256 private shareDivider = 10; // Defines how much DAI is in 1 EZB
+
+    uint256 private ezbPrice = 100000; // Defines how much DAI is in 1 EZB with precision of ezbPricePrecision
+    uint256 private ezbPricePrecision = 10000;
+
     uint256 private fromParttoWholeDevider = 1000000000000000000;
     uint256 private poolTokenAmount;
     uint256 private scBalance;
@@ -67,7 +71,8 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
     mapping (address => uint) public strategyFundShare;
     mapping (address => uint) internal settlementAmount;
 
-    event ezbPriceDiscover(uint timestamp, uint ezbFairPrice);
+    event ezbPriceDiscover(uint timestamp, uint totalPV, uint totalDAI, uint ezbFairPrice);
+
     event settlementDiscovered(uint timestamp, uint FP, uint settlementAmountDAI);
 
 
@@ -85,8 +90,10 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
         uint usersCommisions = userBalance.div(feePercent); // Get 0.5% of user balance as a comissions
         totalComissions = totalComissions.add(usersCommisions);
         userBalance = userBalance.sub(usersCommisions);
+        userBalance = userBalance.div(ezbPrice);
+        userBalance = userBalance.mul(ezbPricePrecision);
 
-        _mint(msg.sender, userBalance.div(shareDivider));
+        _mint(msg.sender, userBalance);
 
     }
 
@@ -145,7 +152,7 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
     }
 
 
-    function getEZBprice() private returns(uint) {
+    function getEZBprice() public returns(uint) {
 
         // require now out of final settlement boundaries
 
@@ -155,12 +162,13 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
             totalPositionsValue = totalPositionsValue.add(ERC20(daiAddress).balanceOf(strategies[i]));
         }
 
-        uint totalDAIinSystem = totalPositionsValue.add((ERC20(daiAddress).balanceOf(address(this))).sub(totalComissions));
-        shareDivider = totalDAIinSystem.div(totalSupply());
+        uint totalDAIinSystem = ((totalPositionsValue.add((ERC20(daiAddress).balanceOf(address(this)))).sub(totalComissions))).mul(ezbPricePrecision);
 
-        emit ezbPriceDiscover(now, shareDivider);
+        ezbPrice = totalDAIinSystem.div(ERC20(address(this)).totalSupply());
 
-        return shareDivider;
+        emit ezbPriceDiscover(now, totalPositionsValue, totalDAIinSystem, ezbPrice);
+
+        return ezbPrice;
     }
 
 
@@ -178,27 +186,30 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
         // require(flag == true, "EZBERG_ERROR: msg sender is not a strategy contract");
         if (flag == true) {
         // Get current ezb price
-        shareDivider = getEZBprice();
+        ezbPrice = getEZBprice();
 
         uint strategySettlementBalanceEZB = balanceOf(address(this)).div(strategyFundShare[msg.sender]); // SECURITY ISSUE!!! If strategies will require settlement in order differ from initial order there will be balances missmach!!!!
-        uint strategySettlementBalanceDAI = strategySettlementBalanceEZB.mul(shareDivider);
+        uint strategySettlementBalanceDAI = strategySettlementBalanceEZB.mul(ezbPrice);
+        strategySettlementBalanceDAI = strategySettlementBalanceDAI.div(ezbPricePrecision);
 
-        emit settlementDiscovered(now, shareDivider, strategySettlementBalanceDAI);
+        emit settlementDiscovered(now, ezbPrice, strategySettlementBalanceDAI);
 
         return strategySettlementBalanceDAI;
 
 
         } else{
-            uint strategySettlementBalanceEZB = balanceOf(address(this)).div(1); // SECURITY ISSUE!!! If strategies will require settlement in order differ from initial order there will be balances missmach!!!!
-            uint strategySettlementBalanceDAI = strategySettlementBalanceEZB.mul(shareDivider);
+            ezbPrice = getEZBprice();
 
-            emit settlementDiscovered(now, shareDivider, strategySettlementBalanceDAI);
+            uint strategySettlementBalanceEZB = balanceOf(address(this)).div(1); // SECURITY ISSUE!!! If strategies will require settlement in order differ from initial order there will be balances missmach!!!!
+            uint strategySettlementBalanceDAI = strategySettlementBalanceEZB.mul(ezbPrice);
+            strategySettlementBalanceDAI = strategySettlementBalanceDAI.div(ezbPricePrecision);
+
+            emit settlementDiscovered(now, ezbPrice, strategySettlementBalanceDAI);
 
             return strategySettlementBalanceDAI;
         }
 
     }
-
 
 
     function getSCBack() public onlyOwner {
@@ -230,7 +241,8 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
         require(flag == true, "EZBERG_ERROR: Your address not in settlement list. Try to send EZB during another settlement period");
 
         // Get user's allowed to withdraw DAI balance
-        uint userAllowedBalance = settlementAmount[msg.sender].mul(shareDivider);
+        uint userAllowedBalance = settlementAmount[msg.sender].mul(ezbPrice);
+        userAllowedBalance = userAllowedBalance.div(ezbPricePrecision);
 
         // Get users comissions
         uint usersCommisions = userAllowedBalance.div(feePercent);
@@ -242,7 +254,9 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
         require(withdrawAmount <= ERC20(daiAddress).balanceOf(address(this)), "Error: Construct's insufficient funds");
 
         // Decrease users settlement amount, withdraw stable coins and burn shared pool tokens
-        uint withdrawAmountEZB = withdrawAmount.div(shareDivider);
+        uint withdrawAmountEZB = withdrawAmount.div(ezbPrice);
+        withdrawAmountEZB = withdrawAmountEZB.mul(ezbPricePrecision);
+
         settlementAmount[msg.sender] = settlementAmount[msg.sender].sub(withdrawAmountEZB);
         ERC20(daiAddress).transfer(msg.sender, withdrawAmount);
 
@@ -271,10 +285,11 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
         // require(startClearingTime < now && now < endClearingTime, "EZBERG_ERROR: IT IS NOT A CLEARING PERIOD");
 
         if (totalSupply() == 0) {
-            shareDivider = 10;
+            ezbPrice = 100000;
             delete usersToSettle;
+
         } else {
-            shareDivider = getEZBprice();
+            ezbPrice = getEZBprice();
 
             for (uint i=0; i < usersToSettle.length; i++) {
 
@@ -408,7 +423,7 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
 
 
     function getLastEZBprice() external view returns(uint) {
-        return shareDivider;
+        return ezbPrice;
     }
 
 }
