@@ -80,9 +80,10 @@ contract SharedFundV01 is ERC20Burnable, Ownable {
     }
 
 
-    function participate() public {
+    function participate(approveAmount) public {
         // require(startParticipationTime < now && now < endParticipationTime, "EZBERG_ERROR: IT IS NOT PARTICIPATION TIME");
 
+        ERC20(daiAddress).approve(address(this), approveAmount);
         uint userBalance = ERC20(daiAddress).allowance(msg.sender, address(this));
         require(userBalance > 0, "EZBERG_ERROR: There are no DAI were allowed for transaction");
         ERC20(daiAddress).transferFrom(msg.sender, address(this), userBalance);
