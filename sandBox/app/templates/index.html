@@ -1,89 +1,319 @@
+<!doctype html>
 <html>
-  <head>
-    <title> {{ title }} - EZBERG EQUALITY</title>
-  </head>
-  <body>
-    <h1>It is v.{{ version.version }} of Ezberg Equality Traders API</h1>
-    <p>
-      Hi there! This is a REST API for traders. Here you can register yourself as a trader, create your strategy, place/cancel your orders and get info about them.<br>
-      Notice, <b>all parameters are required</b> to be filled in.<br><br>
-      <b>WARNING</b>: This API is just a prototipe! Application is still in development mode! <b>STABILITY NOT GUARANTEED!!!</b> Use it at your own risk!<br>
-      WARNING: Format "number.decimals" is required everywhere "float" pointer is set. Example: "10000.00", not "10000"
-    </p>
 
-          <p>
-          <br>FUNCTIONS LIST:<br>
-          <br>1. Trader's Registration: '/traderRegistration/'
-          <br> Parameters:
-          <br>- cryptowallet (str);
-          <br>- username (str)
-          <br>
-          <br>Request format:
-          <br>/traderRegistration/cryptowallet=[yourCryptoAddress]&username=[yourUsername]<br><br>
+<head>
+<meta charset="UTF-8">
 
-          <br>2. Strategy Registration: '/strategyRegistration/'
-          <br> Parameters:
-          <br>- cryptowallet (str);
-          <br>- algorithm openness - open or close - (str);
-          <br>- strategy's max capital capacity - small (<= $100'000), medium (<= $1'000'000), big (<= $100'000'000), infinite (<= 1'000'000'000) - (str);
-          <br>- leverage (int);
-          <br>- strategy name
-          <br>
-          <br>Request format:
-          <br>/strategyRegistration/cryptowallet=[yourCryptoAddress]&algoOpenness=[yourAlgoOpenness]&capitalCapacity=[yourCapitalCapacity]&leverage=[yourLeverage]&strategyName=[yourStrategyName]<br><br>
+<title>EZB Eqality||App</title>
 
-          <br>3. Place Order: '/placeOrder/'
-          <br>Parameters:
-          <br>- cryptowallet (str);
-          <br>- strategyID (str);
-          <br>- symbol (str);
-          <br>- direction (str);
-          <br>- order type - have to be "LIMIT" for now - (str);
-          <br>- price (float);
-          <br>- volume (float);
-          <br>- time in force - have to be "GTC" for now (str).
-          <br>
-          <br>Request format:
-          <br>'/placeOrder/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]&symbol=[symbol]&direction=[yourOrdersDirection]&orderType=[yourOrderType]&price=[yourOrdersPrice]&volume=[yourOrdersVolume]&timeInForce=[yourOrdersTimeInForce]'<br><br>
+<link rel="apple-touch-icon" sizes="57x57" href= "{{ url_for('static', filename='pics/apple-icon-57x57.png') }}"/>
+<link rel="apple-touch-icon" sizes="60x60" href="{{ url_for('static', filename='pics/apple-icon-60x60.png') }}">
+<link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='pics/apple-icon-72x72.png') }}">
+<link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='pics/apple-icon-76x76.png') }}">
+<link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='pics/apple-icon-114x114.png') }}">
+<link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='pics/apple-icon-120x120.png') }}">
+<link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='pics/apple-icon-144x144.png') }}">
+<link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='pics/apple-icon-152x152.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pics/apple-icon-180x180.png') }}">
+<link rel="icon" type="image/png" sizes="192x192"  href="{{ url_for('static', filename='pics/android-icon-192x192.png') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pics/favicon-32x32.png') }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='pics/favicon-96x96.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pics/favicon-16x16.png') }}">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 
-          <br>4. Get All Open Orders: '/openOrders/'
-          <br>Parameters:
-          <br>- cryptowallet (str);
-          <br>- strategyID (str);
-          <br>
-          <br>Request format:
-          <br>/openOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/mainStyle.css') }}"/>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.7/dist/web3.min.js"></script>
+</head>
 
-          <br>5. Get All Orders: '/getOrders/'
-          <br>Parameters:
-          <br>- cryptowallet (str);
-          <br>- strategyID (str);
-          <br>
-          <br>Request format:
-          <br>/getOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
+    <!-- 001a33  000d1a-->
+    <body bgcolor="#001133" link="white">
 
-          <br>6. Cancel particular order: /cancelParticularOrder/
-          <br>Parameters:
-          <br>- cryptowallet (str);
-          <br>- strategyID (str);
-          <br>- orderID (str);
-          <br>
-          <br>Request format:
-          <br>/cancelParticularOrder/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]&orderID=[yourOrderID]<br><br>
+      <nav class="top-menu">
+        <ul class="menu-main">
+          <li class="left-item"><a href="https://www.ezbergequal.com/">Home</a></li>
+          <div class="b-container">
+            <li class="left-item"><a href="javascript:showInstructions()">How it works</a></li>
+          </div>
+          <div class="c-container">
+            <li class="right-item"><a href="javascript:showContacts()">Contact</a></li>
+          </div>
+        </ul>
+      </nav>
 
-          <br>7. Cancel All Orders: '/cancelOpenOrders/'
-          <br>Parameters:
-          <br>- cryptowallet (str);
-          <br>- strategyID (str);
-          <br>
-          <br>Request format:
-          <br>/getOrders/cryptowallet=[yourCryptoAddress]&strategyID=[yourStrategyID]<br><br>
 
-          </p>
+      <div class = "form-wrap">
+        <button class = "connectButton" id ="connectMM">Connect to Metamask</button><br>
 
-          <p>
-          <br>==== LINKS ====<br>
-          <a href="https://github.com/AnkyDu77">GitHub</a>
-          </p>
-  </body>
+        <input type="text" id= "daiIn" half placeholder="DAI Amount">
+        <button class = "approveButton" id ="approveDAI">Send DAI</button>
+        <button class = "sendButton" id ="sendDAI">Get EZB</button><br><br>
+        <input type="text" id= "ezbOut" half placeholder="EZB Amount">
+        <button class = "approveButton" id ="sendEZB">Send EZB</button><br><br>
+        <h3>Participation period starts at <span class ="startParticipationTime"></span></h3>
+        <h3>EZB Amount:  <span class="showEZBamount"></span></h3>
+        <h3>EZB Last Price:  <span class="ezbLastPrice"></span></h3>
+        <h3>DAI to send:  <span class="daiToSend"></span></h3>
+        <h3>From Address:  <span class="fromAddress"></span></h3>
+
+      </div>
+
+
+      <div class="b-popup" id="instructions">
+          <div class="b-popup-content">
+            <div class = "b-popup-close">
+                <a href="javascript:hideInstructions()" style="text-decoration:none;">X</a>
+            </div>
+            WELCOME TO EZBERG APP!<br><br>
+            Take a few of steps to participate the fund.<br><br><br>
+            <ul>
+              <li>Install Metamask cryptowallet into your browser.<br>The list of supported browsers and install instructions can be found <a href="https://metamask.io/download.html" target="_blank">here</a>.</li><br><br>
+              <li>Deposit DAI to your Metamask wallet.<br>You can find out how to get DAI <a href="https://medium.com/adex-network-tips-and-tricks/how-to-get-dai-stablecoin-1660e8d76faa" target="_blank">here</a>.</li><br><br>
+              <li>Connect the app with your Metamask by clicking "Connect to Metamask" button.</li><br><br>
+              <li>Write down DAI amount you want to deposit into the fund and approve to spend it by clicking "Send DAI" button.<br>Note that you can participate the fund only during <b>participation period!</b></li><br><br>
+              <li>After approval transction will be comleted get your EZB tokens by clicking "Get EZB" button.<br>EZB will be sent to your Metamask wallet. To get access to the EZB balance you shoul add EZB to the Metamask tokens list by adding EZBERG Fund Contract Address: <b>0xb969feabe3f1f5e1b918dbe6bff10f9b33f151c9</b><br>Adding token instructions can be found <a href="https://metamask.zendesk.com/hc/en-us/articles/360015489031-How-to-View-See-Your-Tokens-and-Custom-Tokens-in-Metamask" target="_blank">here</a>.</li><br><br>
+              <li>Get your DAI and corresponding profit back to your wallet by sending EZB tokens back to the fund during settlement period.<br>To participate the settlement write down EZB amount you want to settle and send it to the fund by clicking "Send EZB".</li><br><br><br>
+            </ul>
+            We are glad to have you here in EZBERG EQUALITY. If you have any questions do not hestitate to contact us. We will be happy to assist you.<br>Sencerely yours,<br>EZBERG EQUALITY Team.
+          </div>
+      </div>
+
+
+      <div class="c-popup" id="contacts">
+          <div class="c-popup-content">
+            <div class = "c-popup-close">
+                <a href="javascript:hideContacts()" style="text-decoration:none;">X</a>
+            </div>
+            CONTACTS<br><br><br>
+
+            <ul>
+              <li>GitHub: <a href="https://github.com/AnkyDu77/ezbergequality">EZBERG GitHub</a></li><br><br>
+              <li>email: phenix3.14@gmail.com</li><br><br>
+              <li>Telegram: @AnkyDu77</li><br><br><br>
+            </ul>
+            We are glad to have you here in EZBERG EQUALITY. If you have any questions do not hestitate to contact us. We will be happy to assist you.<br>Sencerely yours,<br>EZBERG EQUALITY Team.
+          </div>
+      </div>
+
+
+<script type="text/javascript">
+
+window.addEventListener('load', async () => {
+
+  let erc20Abi = [{"constant": true, "inputs": [], "name": "name", "outputs": [{"name": "", "type": "string"}], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}], "name": "approve", "outputs": [{"name": "", "type": "bool"}], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"}], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"}], "name": "transferFrom", "outputs": [{"name": "", "type": "bool"}], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "decimals", "outputs": [{"name": "", "type": "uint8"}], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "_owner", "type": "address"}], "name": "balanceOf", "outputs": [{"name": "balance", "type": "uint256"}], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "symbol", "outputs": [{"name": "", "type": "string"}], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"}], "name": "transfer", "outputs": [{"name": "", "type": "bool"}], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}], "name": "allowance", "outputs": [{"name": "", "type": "uint256"}], "payable": false, "stateMutability": "view", "type": "function"}, {"payable": true, "stateMutability": "payable", "type": "fallback"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "owner", "type": "address"}, {"indexed": true, "name": "spender", "type": "address"}, {"indexed": false, "name": "value", "type": "uint256"}], "name": "Approval", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "from", "type": "address"}, {"indexed": true, "name": "to", "type": "address"}, {"indexed": false, "name": "value", "type": "uint256"}], "name": "Transfer", "type": "event"}];
+
+  let ezbAbi =  [{"inputs": [], "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "owner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "spender", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"}], "name": "Approval", "type": "event"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {"internalType": "uint256", "name": "amount", "type": "uint256"}], "name": "approve", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "amount", "type": "uint256"}], "name": "burn", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "account", "type": "address"}, {"internalType": "uint256", "name": "amount", "type": "uint256"}], "name": "burnFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "strategyAddress", "type": "address"}, {"internalType": "uint256", "name": "shareDiv", "type": "uint256"}], "name": "changeStrategyShare", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "clearing", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {"internalType": "uint256", "name": "subtractedValue", "type": "uint256"}], "name": "decreaseAllowance", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "getEZBprice", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "getSCBack", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {"internalType": "uint256", "name": "addedValue", "type": "uint256"}], "name": "increaseAllowance", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}], "name": "OwnershipTransferred", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "from", "type": "address"}, {"indexed": true, "internalType": "address", "name": "to", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"}], "name": "Transfer", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "totalPV", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "totalDAI", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "ezbFairPrice", "type": "uint256"}], "name": "ezbPriceDiscover", "type": "event"}, {"inputs": [], "name": "participate", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "requestSettlementBalance", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "sendSCtoTrade", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "strategyAddress", "type": "address"}, {"internalType": "uint256", "name": "shareDiv", "type": "uint256"}], "name": "setStrategy", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "startParticipation", "type": "uint256"}, {"internalType": "uint256", "name": "partTP", "type": "uint256"}, {"internalType": "uint256", "name": "distrTP", "type": "uint256"}, {"internalType": "uint256", "name": "trTime", "type": "uint256"}, {"internalType": "uint256", "name": "settleAplP", "type": "uint256"}, {"internalType": "uint256", "name": "settleTP", "type": "uint256"}, {"internalType": "uint256", "name": "withdrawTP", "type": "uint256"}, {"internalType": "uint256", "name": "clearTP", "type": "uint256"}], "name": "setTimePeriodsByOwner", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"anonymous": false, "inputs": [{"indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "FP", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "settlementAmountDAI", "type": "uint256"}], "name": "settlementDiscovered", "type": "event"}, {"inputs": [{"internalType": "address", "name": "to", "type": "address"}, {"internalType": "uint256", "name": "tokens", "type": "uint256"}], "name": "transfer", "outputs": [{"internalType": "bool", "name": "success", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "sender", "type": "address"}, {"internalType": "address", "name": "recipient", "type": "address"}, {"internalType": "uint256", "name": "amount", "type": "uint256"}], "name": "transferFrom", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "withdrawAllComissions", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "withdrawAmount", "type": "uint256"}], "name": "withdrawComissions", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "withdrawAmount", "type": "uint256"}], "name": "withdrawSC", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}, {"internalType": "address", "name": "spender", "type": "address"}], "name": "allowance", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "account", "type": "address"}], "name": "balanceOf", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "decimals", "outputs": [{"internalType": "uint8", "name": "", "type": "uint8"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getDistributionTimePeriods", "outputs": [{"internalType": "uint256[]", "name": "", "type": "uint256[]"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getLastEZBprice", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "userAddress", "type": "address"}], "name": "getSettleAmount", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getSettlementAddresses", "outputs": [{"internalType": "address[]", "name": "", "type": "address[]"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getTotalComissions", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getTotalSettlementVolume", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "isOwner", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "name", "outputs": [{"internalType": "string", "name": "", "type": "string"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "owner", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "", "type": "address"}], "name": "strategyFundShare", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "symbol", "outputs": [{"internalType": "string", "name": "", "type": "string"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "totalSupply", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}];
+
+
+  let daiAddress = "0xaD6D458402F60fD3Bd25163575031ACDce07538D";
+  let ezbFundAddress = "0xb969feabe3f1f5e1b918dbe6bff10f9b33f151c9";
+
+/// var  web3 = new Web3();
+ //web3 = new Web3( Web3.currentProvider);
+
+ // function startApp() {}
+
+ const provider = await detectEthereumProvider();
+ const showEZBamount = document.querySelector('.showEZBamount');
+ const account = document.querySelector('.fromAddress');
+ var ezbStartParticipation = document.querySelector('.startParticipationTime');
+ var ezbLastPrice = document.querySelector('.ezbLastPrice');
+ var daiToSend = document.querySelector('.daiToSend');
+
+
+
+ if (provider) {
+   // Initialize your app
+   web3 = new Web3(provider);
+
+   console.log(web3);
+   console.log(provider);
+ } else {
+   console.log('Please install MetaMask!');
+ }
+
+
+  const etf = new web3.eth.Contract(ezbAbi, ezbFundAddress);
+  const dai = new web3.eth.Contract(erc20Abi, daiAddress);
+
+   console.log(etf);
+   console.log(dai);
+   const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+   const userAccount = accounts[0];
+   console.log(userAccount);
+
+
+   $("#approveDAI").click( async function(){
+
+     var daiPartAmount = web3.utils.toWei($("#daiIn").val());
+
+     await dai.methods.approve(ezbFundAddress, daiPartAmount).send({ from: userAccount });
+
+   });
+
+   $("#sendDAI").click( async function(){
+
+     await etf.methods.participate().send({ from: userAccount });
+
+    });
+
+    $("#connectMM").click( async function(){
+
+        account.innerHTML = userAccount;
+        ethereum.request({ method: 'eth_requestAccounts' });
+
+
+    });
+
+
+    $("#daiIn").keyup( async function() {
+
+      var daiAmount = $("#daiIn").val();
+      var sendingAmount = web3.utils.toWei($("#daiIn").val());
+      var lastEzbPrice = await etf.methods.getLastEZBprice().call();
+
+      document.getElementById("ezbOut").setAttribute('value',daiAmount/(lastEzbPrice/10000));
+
+      showEZBamount.innerHTML = daiAmount/(lastEzbPrice/10000);
+      ezbLastPrice.innerHTML = lastEzbPrice/10000;
+      daiToSend.innerHTML = sendingAmount;
+
+    });
+
+    var distributionPeriods = await etf.methods.getDistributionTimePeriods().call();
+    var startParticipationTimestamp = distributionPeriods[0];
+    var date = new Date(startParticipationTimestamp * 1000);
+    // var hours = date.getHours();
+    // var minutes = "0" + date.getMinutes();
+    // var seconds = "0" + date.getSeconds();
+
+    // Will display time in 10:30:23 format
+    // var startParticipationTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+    ezbStartParticipation.innerHTML = date;
+
+})
+      </script>
+
+      <script>
+
+      $(document).ready(function(){
+          hideInstructions();
+          hideContacts();
+        });
+        function showInstructions(){
+          $("#instructions").show();
+        }
+        function hideInstructions(){
+          $("#instructions").hide();
+        }
+        function showContacts(){
+          $("#contacts").show();
+        }
+        function hideContacts(){
+          $("#contacts").hide();
+        }
+
+      </script>
+
+    </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>EZB Eqality</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/mainStyle.css') }}" />
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div id="txStatus"></div>
+    <div id="app"></div>
+
+    <script>
+
+    import detedetectEthereumProvider from detect-provider;
+
+    function startApp() {
+      $("#app").append('<div class="profile"> <h1>READY TO WORK!</h1> </div>');
+    }
+
+    function installWalletMessage() {
+      $("#app").append('<div class="profile"> <h1>Install Metamask!</h1> </div>');
+    }
+
+
+    window.addEventListener('load', async () => {
+
+      const provider = await detedetectEthereumProvider()
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      if (provider) {
+        // Use Mist/MetaMask's provider
+        web3js = new Web3(provider);
+        startApp();
+      } else {
+        // Handle the case where the user doesn't have Metamask installed
+        // Probably show them a message prompting them to install Metamask
+        installWalletMessage();
+      }
+
+      // Now you can start your app & access web3 freely:
+
+
+    })
+
+      var erc20Abi = require('./ERC20abi.json');
+      var ezbAbi = require("./ezbFundAbi.json");
+
+      var etfAddress = '0xb969feabe3f1f5e1b918dbe6bff10f9b33f151c9';
+      var daiAddress = '0xaD6D458402F60fD3Bd25163575031ACDce07538D';
+
+    </script>
+
+  </body>
+</html> -->
+
+<!-- <div class="form-wrap">
+  <div class="profile"><img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
+    <h1>Регистрация</h1>
+  </div>
+  <form method="post" action="form.php">
+    <div>
+      <label for="name">DAI Amount</label>
+      <input type="text" name="name" required>
+    </div>
+    <div>
+      <label for="email">EZB Amount</label>
+      <input type="email" name="email" required>
+    </div>
+    <button type="submit">SEND TO FUND</button>
+  </form>
+</div> -->

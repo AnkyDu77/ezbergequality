@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<!-- <meta charset="UTF-8"> -->
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/beautyStyle.css') }}" />
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&amp;display=swap" /> -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<form autocomplete="off">
+  <div id="focus"></div>
+  <h1>Your info</h1>
+  <input type="text" half placeholder="First name" autocomplete="no">
+  <input type="text" half placeholder="Last name" autocomplete="no">
+  <input type="text" placeholder="Address" autocomplete="no">
+  <input type="text" half placeholder="Zip code" autocomplete="no">
+  <input type="text" half placeholder="City" autocomplete="no">
+  <input type="text" placeholder="Mail" autocomplete="no">
+  <input type="submit" value="Send it">
+ </form>
+
+
+<script type="text/javascript">
+
+  const FORM = $("form"); // set form or other element here
+  const TYPES = ["input[type=text], input[type=submit]"]; // set which elements get targeted by the focus
+  const FOCUS = $("#focus"); // focus element
+
+  // function for positioning the div
+  function position(e) {
+    // get position
+    var props = {
+      top: e.offset().top,
+      left: e.offset().left,
+      width: e.outerWidth(),
+      height: e.outerHeight(),
+      radius: parseInt(e.css("border-radius"))
+    };
+
+    // set position
+    FOCUS.css({
+      top: props.top,
+      left: props.left,
+      width: props.width,
+      height: props.height,
+      "border-radius": props.radius
+    });
+
+    FOCUS.fadeIn(200);
+  }
+
+  FORM.find(TYPES.join()).each(function(i) {
+    // when clicking an input defined in TYPES
+    $(this).focus(function() {
+      el = $(this);
+
+      // adapt size/position when resizing browser
+      $(window).resize(function() {
+        position(el);
+      });
+
+      position(el);
+    });
+  });
+
+  FORM.on("focusout", function(e) {
+    setTimeout(function() {
+      if (!e.delegateTarget.contains(document.activeElement)) {
+        FOCUS.fadeOut(200);
+      }
+    }, 0);
+  });
+
+</script >
+
+
+</body>
+
+</html>

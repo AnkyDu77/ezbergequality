@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo');
+.top-menu {
+  position: relative;
+  background: rgba(34,34,34,.2);
+  margin-bottom: 50px;
+}
+.menu-main {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-main:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.left-item {float: left;}
+.right-item {float: right;}
+
+.menu-main a {
+  text-decoration: none;
+  display: block;
+  line-height: 80px;
+  padding: 0 20px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-family: 'Arimo', sans-serif;
+  font-weight: bold;
+  color: white;
+  transition: .3s linear;
+}
+.menu-main a:hover {background: rgba(0,0,0,.3);}
+
+
+
+
+.b-container{
+    margin:0px;
+    padding:0px;
+}
+.b-popup{
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.6);
+    font-family: 'Arimo', sans-serif;
+    position:fixed;
+    top:0px;
+}
+.b-popup .b-popup-content{
+    margin:30px auto;
+    width:700px;
+    height: 550px;
+    padding:20px;
+    background-color: rgba(17,17,17,0.95);
+    border-radius:10px;
+    box-shadow: 0px 0px 10px #000;
+    color: white;
+    font-size:12px;
+}
+.b-popup .b-popup-close{
+    margin-left: calc(100% - 20px);
+    margin-right: 0px;
+    color: white;
+}
+
+
+.c-container{
+    margin:0px;
+    padding:0px;
+}
+.c-popup{
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.6);
+    font-family: 'Arimo', sans-serif;
+    position:fixed;
+    top:0px;
+}
+.c-popup .c-popup-content{
+    margin:150px auto;
+    width:400px;
+    height: 280px;
+    padding:20px;
+    background-color: rgba(17,17,17,0.95);
+    border-radius:10px;
+    box-shadow: 0px 0px 10px #000;
+    color: white;
+    font-size:12px;
+}
+.c-popup .c-popup-close{
+    margin-left: calc(100% - 20px);
+    margin-right: 0px;
+    color: white;
+}
+
+
+
+.form-wrap {
+  width: 500px;
+  height: auto;
+  background: #262626;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0,0,0,1);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  font-family: 'Arimo', sans-serif;
+}
+.form-wrap *{transition: .1s linear}
+.profile {
+  width: 240px;
+  float: center;
+  text-align: center;
+  padding: 30px;
+}
+form {
+  background: white;
+  float: left;
+  width: calc(100% - 240px);
+  padding: 30px;
+  border-radius: 0 20px 20px 0;
+  color: #7b7b7b;
+  /* color: #2a5ec7; */
+}
+.form-wrap:after, form div:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+form div {
+  margin-bottom: 15px;
+  position: relative;
+}
+h1 {
+  font-size: 24px;
+  font-weight: 400;
+  font-family: 'Arimo', sans-serif;
+  position: relative;
+  margin-top: 50px;
+}
+h1:after {
+  content: "\f138";
+  font-size: 40px;
+  font-family: 'Arimo', sans-serif;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 550;
+  font-family: 'Arimo', sans-serif;
+  color: white;
+  margin: 4px 25px;
+}
+
+/********************** стилизация элементов формы **********************/
+label, span {
+  display: block;
+  font-size: 18px;
+  font-family: 'Arimo', sans-serif;
+  width: auto;
+  margin-bottom: 10px;
+}
+input[type="text"], input[type="email"] {
+  border-width: 1px;
+  font-size: 18px;
+  color: white;
+  outline: none;
+  margin: 15px 20px;
+  width: calc(100% - 120px);
+  padding: 10px 35px;
+  background: #262626; /*#e6e6e6;*/
+  border-radius: 10px;
+  border-color: #B0B0B0;
+  font-family: 'Arimo', sans-serif;
+  /* background: #2a5ec7; */
+}
+input[type="text"]:focus, input[type="email"]:focus {
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2); /*inset*/
+}
+
+
+.connectButton {
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  color: white;
+  padding: 15px 17px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Arimo', sans-serif;
+  margin: 0px 0px;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.approveButton {
+    /* background-color: #4CAF50; */
+    background-color: #1a66ff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'Arimo', sans-serif;
+    margin: 2px 90px;
+    cursor: pointer;
+}
+
+.sendButton {
+    /* background-color: #4CAF50; */
+    background-color: #1a66ff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'Arimo', sans-serif;
+    margin: 2px 0px;
+    cursor: pointer;
+}
+
+/********************** добавляем форме адаптивность **********************/
+@media (max-width: 600px) {
+  .form-wrap {margin: 20px auto; max-width: 550px; max-height: 2000px; width:100%;}
+  .profile, form {float: none; width: 100%;}
+  h1 {margin-top: auto; padding-bottom: 50px;}
+  form {border-radius: 0 0 20px 20px;}
+  .menu-main li {display: block;}
+  .menu-main {
+    /* padding-top: 90px; */
+    text-align: center;
+  }
+
+  .menu-main li {
+    float: none;
+    display: inline-block;
+  }
+  .menu-main a {
+    line-height: normal;
+    padding: 20px 15px;
+    font-size: 16px;
+  }
+
+}

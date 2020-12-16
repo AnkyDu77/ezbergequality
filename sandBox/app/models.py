@@ -82,7 +82,7 @@ class StrategiesIDs(db.Model):
     salt = db.Column(db.LargeBinary)
     hashKey = db.Column(db.LargeBinary)
     traderID = db.Column(db.String(128), index=True)
-    
+
 
 class Rating(db.Model):
     id = db.Column(db.Integer, primary_key=True)

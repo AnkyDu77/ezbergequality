@@ -8,13 +8,22 @@ from getAllOrders import getAllOrders
 from getOpenOrders import getOpenOrders
 from cancelAllOrders import cancelAllOrders
 from cancelOrder import cancelOrder
+from config import Config
+
+import json
 
 
 @app.route('/')
 @app.route('/index')
 def index():
+    with open(Config().ERC20_ABI_PATH, 'r') as erc20abiFile:
+        erc20abi = json.load(erc20abiFile)
+
+    with open(Config().EZB_ABI_PATH, 'r') as ezbAbiFile:
+        ezbAbi = json.load(ezbAbiFile)
+
     version = {'version': 0.01}
-    return render_template('index.html', title='Home', version = version)
+    return render_template('index.html',erc20abi = erc20abi, ezbAbi = ezbAbi, title='Home', version = version)
 
 
 # Registrate new Trader
